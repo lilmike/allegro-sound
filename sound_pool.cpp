@@ -1,5 +1,8 @@
 #include "sound_pool.h"
 
+/**
+*Sets up a sound pool with 100 slots.
+**/
 sound_pool::sound_pool(void)
 {
 	items = new sound_pool_item[100];
@@ -16,7 +19,10 @@ sound_pool::sound_pool(void)
 	last_listener_angle=0;
 }
 
-sound_pool::sound_pool(int numberofitems) {
+/**
+*Sets up a sound pool with numberofitems slots.
+**/
+sound_pool::sound_pool(int numberofitems/**< [in] the number of slots the sound pool can hold. **/) {
 	if(numberofitems > 0) {
 		items = new sound_pool_item[numberofitems];
 		numberofitems = numberofitems;
@@ -42,11 +48,19 @@ sound_pool::~sound_pool(void)
 delete[] items;
 }
 
-int sound_pool::play_stationary(string filename, bool looping) {
+/**
+*Plays a sound that doesn't move.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_stationary(string filename/**< [in] The file to load.**/, bool looping/**< [in] Whether the sound loops.**/) {
 	return play_stationary_extended(filename, looping, 0, 0, 100, false);
 }
 
-int sound_pool::play_stationary_extended(string filename, bool looping, double start_pan, double start_volume, double start_pitch, bool persistent) {
+/**
+*Plays a sound that doesn't move, but has starting values for pan, volume, and pitch.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_stationary_extended(string filename/**< [in] The file to play.**/, bool looping/**< [in] Whether the sound loops.**/, double start_pan/**< [in] What to modify the pan by.**/, double start_volume/**< [in] What to modify the volume by.**/, double start_pitch/**< [in] What to modify the pitch by.**/, bool persistent/**< [in] Should the slot be cleaned up when the file ends if not looping?**/) {
 	clean_unused();
 	int slot=reserve_slot(filename);
 	if(slot==-1) {
@@ -81,11 +95,19 @@ int sound_pool::play_stationary_extended(string filename, bool looping, double s
 	return slot;
 }
 
-int sound_pool::play_1d(string filename, int listener_x, int sound_x, bool looping) {
+/**
+*plays a sound that moves in the x axis.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_1d(string filename/**< [in] The file to play.**?, int listener_x/**< [in] The x coordinate of the listener.**/, int sound_x/**< [in] The x coordinate of the sound.**/, bool looping/**< Will the file loop?**/) {
 	return play_extended_1d(filename, listener_x, sound_x, 0, 0, looping, 0, 0, 100, false);
 }
 
-int sound_pool::play_extended_1d(string filename, int listener_x, int sound_x, int left_range, int right_range, bool looping, double start_pan, double start_volume, double start_pitch, bool persistent) {
+/**
+*Allows you to play a sound with beginning pitch pan and volume adjustments.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_extended_1d(string filename/**< [in] The file to play.**/, int listener_x/**< [in] The listener's x coordinate.**/, int sound_x/** [in] The sound's x coordinate.**/, int left_range/**< [in] The x coordinate on the left from which the sound should start moving, for example when crossing a river it will stay in the center of your speaker.**/, int right_range/**< [in] The right coordinate from which the  sound should start moving.**/, bool looping/**< [in] Should the file loop?**/, double start_pan/**< [in] The pan value to modify the sound by.**/, double start_volume/**< [in] The volume value to modify the sound by.**/, double start_pitch/**< [in] The pitch value to modify the sound by.**/, bool persistent/**< [in] Should the flie be cleaned up when it it done playing if no looping.**/) {
 	clean_unused();
 	int slot=reserve_slot(filename);
 	if(slot==-1)
@@ -144,7 +166,11 @@ int sound_pool::play_extended_1d(string filename, int listener_x, int sound_x, i
 	return slot;
 }
 
-int sound_pool::play_extended_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, int left_range, int right_range, int backward_range, int forward_range, bool looping, float start_pan, float start_volume, float start_pitch, bool persistent) {
+/**
+*Play a sound in the 2d x-y plane, with starting values and ranges defined.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_extended_2d(string filename/**< [in] The file to play.**/, int listener_x/**< [in] The x coordinate of the listener.**/, int listener_y/**< [in] The y coordintae of the listener.**/, double listener_angle/**< [in] The angle the listener is facing.**/, int sound_x/**< [in] The x coordinate of the sound.**/, int sound_y/**< [in] The y coordinate of the sound.**/, int left_range/**< [in] The left x coordinate at which the sound starts moving.**/, int right_range/**< [in] The right x coordinate at which the sound starts moving.**/, int backward_range/**< [in] The backward y coordinate at which the sound starts moving.**/, int forward_range/**< [in] The forward y coordinate at which the sound starts moving.**/, bool looping/**< [in] Does the file loop?**/, float start_pan/**< [in] The pan value to modify the sound by.**/, float start_volume/**< [in] The volume value to modify the sound by.**/, float start_pitch/**< [in] The pitch value to modify the sound by.**/, bool persistent/**< [in] Should the file be cleaned up when it is done playing if not looping?**/) {
 	clean_unused();
 	int slot=reserve_slot(filename);
 	if(slot==-1) {
@@ -204,15 +230,27 @@ int sound_pool::play_extended_2d(string filename, int listener_x, int listener_y
 	return slot;
 }
 
-int sound_pool::play_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, bool looping) {
+/**
+*Plays a sound in the 2d x-y plane.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_2d(string filename/**< [in] The file to play.**/, int listener_x/**< [in] The x coordintae of the listener.**/, int listener_y/**< [in] The y coordinate of the listener.**/, double listener_angle/**< [in] The angle the listener is facing.**/, int sound_x/** [in] The x coordinate of the sound.**/, int sound_y/**< [in] The y coordinate of the sound.**/, bool looping/**< [in] Should the file loop?**/) {
 	return play_extended_2d(filename, listener_x, listener_y, listener_angle, sound_x, sound_y, 0, 0, 0, 0, looping, 0, 0, 100, false);
 }
 
-int sound_pool::play_3d(string filename, int listener_x, int listener_y ,int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, bool looping) {
+/**
+*Plays a sound in 3d.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_3d(string filename/**< [in] The file to play.**/, int listener_x/**< [in] The listener's x coordinate.**/, int listener_y/**< [in] The listener's y coordinate.**/,int listener_z/**< [in] The listener's z coordinate.**/, double listener_angle/**< [in] The angle the listener is facing.**/, int sound_x/**< [in] The sound's x coordinate.**/, int sound_y/**< [in] The sounds y coordinate.**/, int sound_z/**< [in] The sounds z coordinate.**/, bool looping/**< [in] Does the sound loop?**/) {
 	return play_extended_3d(filename, listener_x, listener_y, listener_z, listener_angle, sound_x, sound_y, sound_z, 0, 0, 0, 0, 0, 0, looping, 0, 0, 100, false);
 }
 
-int sound_pool::play_extended_3d(string filename, int listener_x, int listener_y, int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, int left_range, int right_range, int backward_range, int forward_range, int up_range, int down_range, bool looping, float start_pan, float start_volume, float start_pitch, bool persistent) {
+/**
+*Plays a sound in 3d with starting values for pitch, volume, pan, and ranges.
+*@return The slot that was created for the sound.
+**/
+int sound_pool::play_extended_3d(string filename/**< [in] The file to play.**/, int listener_x/**< [in] The listener's x coordinate.**/, int listener_y/**< [in] The listener's y coordinate.**/, int listener_z/**< [in] The listener's z coordinate.**/, double listener_angle/**< [in] The listener's facing angle.**/, int sound_x/**< [in] The x coordinate of the sound.**/, int sound_y/**< [in] The y coordinate of the sound.**/, int sound_z/**< [in] The z coordinate of the sound.**/, int left_range/**< [in] The left x at which the sound starts moving.**/, int right_range/**< [in] The right x at which the sound starts moving.**/, int backward_range/**< [in] The backward y coordinate at which the sound starts moving.**/, int forward_range/**< [in] The forward y at which the sound starts moving.**/, int up_range/**< [in] The upward z at which the sound starts moving.**/, int down_range/**< [in] The downward z at which the sound starts moving.**/, bool looping/**< [in] Does the file loop?**/, float start_pan/**< [in] The starting pan value.**/, float start_volume/**< [in] The starting volume value.**/, float start_pitch/**< [in] The starting pitch value.**/, bool persistent/**< [in] Does the slot get cleaned up after the file stops playing if not looping?**/) {
 	clean_unused();
 	int slot=reserve_slot(filename);
 	if(slot==-1) {
@@ -274,7 +312,11 @@ int sound_pool::play_extended_3d(string filename, int listener_x, int listener_y
 	return slot;
 }
 
-bool sound_pool::sound_is_active(int slot) {
+/**
+*Check if a slot is active.
+*@return a boolean indicating whether the slot is active.
+**/
+bool sound_pool::sound_is_active(int slot/**< [in] The slot to check.**/) {
 	if(verify_slot(slot)==false) {
 		return false;
 	}
@@ -287,14 +329,22 @@ bool sound_pool::sound_is_active(int slot) {
 	return true;
 }
 
-bool sound_pool::sound_is_playing(int slot) {
+/**
+*Is the sound at this slot playing?
+*@return Whether the sound is playing.
+**/
+bool sound_pool::sound_is_playing(int slot/**< [in] The slot to check.**/) {
 	if(sound_is_active(slot)==false) {
 		return false;
 	}
 	return items[slot].s->is_playing();
 }
 
-bool sound_pool::pause_sound(int slot) {
+/**
+*Pauses the sound.
+*@return Whether the sound was paused.
+**/
+bool sound_pool::pause_sound(int slot/**< [in] The slot of the sound to pause.**/) {
 	if(sound_is_active(slot)==false) {
 		return false;
 	}
@@ -306,7 +356,11 @@ bool sound_pool::pause_sound(int slot) {
 	return true;
 }
 
-bool sound_pool::resume_sound(int slot) {
+/**
+*Unpause a previously paused sound.
+*@return Whether the sound was unpaused.
+**/
+bool sound_pool::resume_sound(int slot/**< [in] The slot to resume.**/) {
 	if(verify_slot(slot)==false) {
 		return false;
 	}
@@ -334,10 +388,9 @@ bool sound_pool::resume_sound(int slot) {
 	return true;
 }
 
-template<typename T, int size>
-int getArrLength(T(&)[size]){return size;}
-
-
+/**
+*Pauses all playing sounds.
+**/
 void sound_pool::pause_all() {
 	int currently_playing=0;
 	for(int i=0; i<numberofitems; i++) {
@@ -347,6 +400,9 @@ void sound_pool::pause_all() {
 	}
 }
 
+/**
+*Resumes all paused sounds.
+**/
 void sound_pool::resume_all() {
 	int currently_playing=0;
 	for(int i=0; i<numberofitems; i++) {
@@ -356,21 +412,33 @@ void sound_pool::resume_all() {
 	}
 }
 
+/**
+*Stops all sounds from playing.
+**/
 void sound_pool::destroy_all() {
 	for(int i=0; i<numberofitems; i++) {
 		items[i].reset();
 	}
 }
 
-void sound_pool::update_listener_1d(int listener_x) {
+/**
+*Updates the x position of the listener.
+**/
+void sound_pool::update_listener_1d(int listener_x/**< [in] The new x position of the listener.**/) {
 	update_listener_2d(listener_x, 0, 0);
 }
 
-void sound_pool::update_listener_2d(int listener_x, int listener_y, double listener_angle) {
+/**
+*Updates the listener's x, y, and facing angles.
+**/
+void sound_pool::update_listener_2d(int listener_x/**< [in] The listener's x coordinate.**/, int listener_y/**< [in] The listener's y coordinate.**/, double listener_angle/**< [in] The listener's facing angle.**/) {
 	update_listener_3d(listener_x, listener_y, 0, listener_angle);
 }
 
-void sound_pool::update_listener_3d(int listener_x, int listener_y, int listener_z, double listener_angle) {
+/**
+*Updates the listener's x, y,z, and facing angle.
+**/
+?void sound_pool::update_listener_3d(int listener_x/**< [in] The listener's x coordinate.**/, int listener_y/**< [in] The listener's y coordinate.**/, int listener_z/**< [in] The listener's z coordinate.**/, double listener_angle/**< [in] The listener's facing angle.**/) {
 	last_listener_x=listener_x;
 	last_listener_y=listener_y;
 	last_listener_z = listener_z;
@@ -381,15 +449,27 @@ void sound_pool::update_listener_3d(int listener_x, int listener_y, int listener
 	}
 }
 
-bool sound_pool::update_sound_1d(int slot, int x) {
+/**
+*Updates a playing sound's x coordintae.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_1d(int slot/**< [in] The slot to update.**/, int x/**< [in] The x coordinate.**/) {
 	return update_sound_2d(slot, x, 0);
 }
 
-bool sound_pool::update_sound_2d(int slot, int x, int y) {
+/**
+*updates the sound's x and y coordinates.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_2d(int slot/**< [in] The slot to update.**/, int x/**< [in] The x coordinate.**/, int y/**< [in] The y coordinate.**/) {
 	return update_sound_3d(slot, x, y, 0);
 }
 
-bool sound_pool::update_sound_3d(int slot, int x, int y, int z) {
+/**
+*Updates the sound's x, y, and z coordinates.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_3d(int slot/**< [in] The slot to update.**/, int x/**< [in] The x coordinate.**/, int y/*< [in The y coordinate.**/, int z/**< [in] The z coordinate.**/) {
 	if(verify_slot(slot)==false) {
 		return false;
 	}
@@ -400,7 +480,11 @@ bool sound_pool::update_sound_3d(int slot, int x, int y, int z) {
 	return true;
 }
 
-bool sound_pool::update_sound_start_values(int slot, float start_pan, float start_volume, float start_pitch) {
+/**
+*Updates the starting values to modify the sound by.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_start_values(int slot/**< [in] The slot to update.**/, float start_pan/**< [in] The starting pan.**/, float start_volume/**< [in] The starting volume.**/, float start_pitch/**< [in] The starting pitch.**/) {
 	if(verify_slot(slot)==false) {
 		return false;
 	}
@@ -420,15 +504,27 @@ bool sound_pool::update_sound_start_values(int slot, float start_pan, float star
 	return true;
 }
 
-bool sound_pool::update_sound_range_1d(int slot, int left_range, int right_range) {
+/**
+*Updates the x ranges for the sound.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_range_1d(int slot/**< [in] The slot to update.**/, int left_range/**< [in] The left x coordinate to start moving the sound at.**/, int right_range/**< [in] The right x cordinate to start moving the sound at.**/) {
 	return update_sound_range_2d(slot ,left_range, right_range, 0, 0);
 }
 
-bool sound_pool::update_sound_range_2d(int slot, int left_range, int right_range, int backward_range, int forward_range) {
+/**
+*Updates the x and y ranges for the sound.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_range_2d(int slot/**< [in] The slot to update.**/, int left_range/**< [in] The left x coordinate to start moving the sound at.**/, int right_range/**< [in] The right x coordinate to start moving the sound at.**/, int backward_range/**< [in] The back y coordinate to start moving the sound at.**/, int forward_range/**< [in] The front y coordinate to start moving the sound at.**/) {
 	return update_sound_range_3d(slot, left_range, right_range, backward_range, forward_range, 0, 0);
 }
 
-bool sound_pool::update_sound_range_3d(int slot, int left_range, int right_range, int backward_range, int forward_range, int up_range, int down_range) {
+/**
+*Updates the x, y, and z ranges for the sound.
+*@return Whether the sound was successfully updated.
+**/
+bool sound_pool::update_sound_range_3d(int slot/**< [in] The slot to update.**/, int left_range/**< [in the left x coordinate to start moving the sound at.**/, int right_range/**< [in] The right x coordinate to start moving the sound at.**/, int backward_range/**< [in] The back y coordinate to start moving the sound at.**/, int forward_range/**< [in] The front y coordinate to start moving the sound at.**/, int up_range/**< [in] The upward range to start moving the sound at.**/, int down_range/**< [in] The downward range to start moving the sound at.**/) {
 	if(verify_slot(slot)==false) {
 		return false;
 	}
@@ -442,7 +538,11 @@ bool sound_pool::update_sound_range_3d(int slot, int left_range, int right_range
 	return true;
 }
 
-bool sound_pool::destroy_sound(int slot) {
+/**
+*Stop playing a sound and destroy the slot.
+*@return Whether the sound was successfully stoped.
+**/
+bool sound_pool::destroy_sound(int slot/**< [in] The slot to stop.**/) {
 	if(verify_slot(slot) == true) {
 		items[slot].reset();
 		return true;

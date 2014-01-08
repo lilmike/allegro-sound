@@ -4,6 +4,9 @@
 using std::string;
 
 #pragma once
+/**
+*The sound pool allows you to play sounds in a virtual space without having to manually control each one.
+**/
 class sound_pool
 {
 public:

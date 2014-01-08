@@ -77,6 +77,10 @@ void sound::log(string s) {
 //	printf(s.c_str());
 }
 
+/**
+*Stop the sound.
+*@return Whether the sound was successfully stopped.
+**/
 bool sound::stop() {
 	if(si) {
 		return al_stop_sample_instance(si);
@@ -87,7 +91,11 @@ bool sound::stop() {
 	return false;
 }
 
-bool sound::load(string file, string mixer) {
+/**
+*Load a file into the sound.
+*@return Whether the sound was successfully loaded.
+**/
+bool sound::load(string file/**< [in] The file to load.**/, string mixer/**< [in] The mixer name to put  the sound on, can be excluded, which adds it to the default mixer.**/) {
 	if(mixers.find(mixer)==mixers.end()) {
 		ALLEGRO_MIXER* m = NULL;
 		m = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_FLOAT32, ALLEGRO_CHANNEL_CONF_2);
@@ -161,11 +169,19 @@ double sound::pan(double doubleval)
 	return new_pan;
 }
 
+/**
+*Gets the pan.
+*@return The pan in decibel.
+**/
 double sound::get_pan() {
 	return panval;
 }
 
-bool sound::set_pan(double pan_value) {
+/**
+*Sets the pan in decibel.
+*@return Whether the pan was successfully set.
+**/
+bool sound::set_pan(double pan_value/**< [in] The pan in decibel.**/) {
 	if(pan_value < -100) {
 		pan_value = -100;
 	}
@@ -185,11 +201,19 @@ bool sound::set_pan(double pan_value) {
 	return true;
 }
 
+/**
+*Check the gain of the sound.
+*@return The gain.
+**/
 double sound::get_gain() {
 	return gainval;
 }
 
-bool sound::set_gain(double gain) {
+/**
+*Set the gain of the sound in decibel.
+*@return Whether the gain was successfully set.
+**/
+bool sound::set_gain(double gain/**< [in] The gain in decibel.**/) {
 	if(gain < -100) {
 		gain = -100;
 	}
@@ -208,11 +232,19 @@ bool sound::set_gain(double gain) {
 	return true;
 }
 
+/**
+*Get the pitch in decibel.
+*@return The pitch.
+**/
 double sound::get_pitch() {
 	return pitchval;
 }
 
-bool sound::set_pitch(double pitch) {
+/**
+*Set the pitch.
+*@return Whether the pitch was successfully set.
+**/
+bool sound::set_pitch(double pitch/**< [in] The pitch in decibel.**/) {
 	if(pitch < 1) {
 		pitch=1;
 	}
@@ -228,11 +260,19 @@ bool sound::set_pitch(double pitch) {
 	return true;
 }
 
+/**
+*Check whether the sound loops.
+*@return Whether hte file loops.
+**/
 bool sound::get_loop() {
 	return looping;
 }
 
-bool sound::set_loop(bool loop) {
+/**
+*Set the file to loop or not.
+*@return Whether the looping value was successfully set.
+**/
+bool sound::set_loop(bool loop/**< [in] Should the file loop?**/) {
 	if(si) {
 		if(loop) {
 			if(!al_set_sample_instance_playmode(si, ALLEGRO_PLAYMODE_LOOP)) {
@@ -252,6 +292,10 @@ bool sound::set_loop(bool loop) {
 	return true;
 }
 
+/**
+*Play the file.
+*@return Whether the file was successfully started playing.
+**/
 bool sound::play() {
 	if(si) {
 		if(paused) {
@@ -266,6 +310,10 @@ bool sound::play() {
 	return false;
 }
 
+/**
+*Check whether the sound is playing.
+*@return Whether the sound is playing.
+**/
 bool sound::is_playing() {
 	if(si) {
 		return al_get_sample_instance_playing(si);
@@ -276,6 +324,10 @@ bool sound::is_playing() {
 	return false;
 }
 
+/**
+*Pause the sound.
+*@return Whether the sound is paused.
+**/
 bool sound::pause() {
 	if(si) {
 		if(paused) {
@@ -292,10 +344,18 @@ bool sound::pause() {
 	return false;
 }
 
+/**
+*Check whether the sound is paused.
+*@return Whether the sound is paused.
+**/
 bool sound::get_paused() {
 	return paused;
 }
 
+/**
+*Check whether the sound has a file loaded into it.
+*@return Whether the sound is active.
+**/
 bool sound::get_active() {
 	return active;
 }
