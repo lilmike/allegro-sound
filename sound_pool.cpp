@@ -204,11 +204,11 @@ int sound_pool::play_extended_2d(string filename, int listener_x, int listener_y
 	return slot;
 }
 
-int sound_pool::play_sound_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, bool looping) {
+int sound_pool::play_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, bool looping) {
 	return play_extended_2d(filename, listener_x, listener_y, listener_angle, sound_x, sound_y, 0, 0, 0, 0, looping, 0, 0, 100, false);
 }
 
-int sound_pool::play_sound_3d(string filename, int listener_x, int listener_y ,int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, bool looping) {
+int sound_pool::play_3d(string filename, int listener_x, int listener_y ,int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, bool looping) {
 	return play_extended_3d(filename, listener_x, listener_y, listener_z, listener_angle, sound_x, sound_y, sound_z, 0, 0, 0, 0, 0, 0, looping, 0, 0, 100, false);
 }
 

@@ -14,9 +14,9 @@ public:
 	int play_stationary_extended(string filename, bool looping, double start_pan = 0, double start_volume = 0, double start_pitch = 100, bool persistent = false);
 	int play_1d(string filename, int listener_x, int sound_x, bool looping);
 	int play_extended_1d(string filename, int listener_x, int sound_x, int left_range, int right_range, bool looping, double start_pan = 0, double start_volume = 0, double start_pitch = 100, bool persistent = false);
-	int play_sound_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, bool looping);
+	int play_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, bool looping);
 	int play_extended_2d(string filename, int listener_x, int listener_y, double listener_angle, int sound_x, int sound_y, int left_range, int right_range, int backward_range, int forward_range, bool looping, float start_pan = 0.0, float start_volume = 0.0, float start_pitch = 100.0, bool persistent=false);
-	int play_sound_3d(string filename, int listener_x, int listener_y ,int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, bool looping);
+	int play_3d(string filename, int listener_x, int listener_y ,int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, bool looping);
 	int play_extended_3d(string filename, int listener_x, int listener_y, int listener_z, double listener_angle, int sound_x, int sound_y, int sound_z, int left_range, int right_range, int backward_range, int forward_range, int up_range, int down_range, bool looping, float start_pan = 0.0, float start_volume = 0.0, float start_pitch = 100.0, bool persistent = false);
 	bool sound_is_active(int slot);
 	bool sound_is_playing(int slot);

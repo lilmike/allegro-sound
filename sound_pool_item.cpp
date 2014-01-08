@@ -135,7 +135,7 @@ void sound_pool_item::position_sound_2d(sound* s, int x, int y, double angle, in
 
 void sound_pool_item::position_sound_3d(sound* s, double x, double y, double z, double theta, double sx, double sy, double sz, double pan_step, double volume_step, double above_pitch, double behind_pitch_decrease, double behind_volume_decrease, double start_pan, double start_volume, double start_pitch) {
 	double xd = x-sx;
-	double yd = sy-y;
+	double yd = y-sy;
 	double zd = z-sz;
 	double d = sqrt((xd*xd)+(yd*yd)+(zd*zd));
 	double atheta, rtheta;
