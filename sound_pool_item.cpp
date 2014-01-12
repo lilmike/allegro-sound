@@ -1,3 +1,7 @@
+//sound_pool_item.cpp
+//By Michael Taboada
+//Provided under the unlicense
+//see UNLICENSE for details
 #include "sound_pool_item.h"
 
 

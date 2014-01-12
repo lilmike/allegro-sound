@@ -1,3 +1,7 @@
+//sound_example.cpp
+//By Michael Taboada
+//Provided under the unlicense
+//see UNLICENSE for details
 /**
 *Example program showing how to load and pan a sound.
 *Also shows pitch and gain.

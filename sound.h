@@ -1,3 +1,7 @@
+//sound.h
+//By Michael Taboada
+//Provided under the unlicense
+//see UNLICENSE for details
 #include <stdio.h>
 #include <map>
 #include <string>

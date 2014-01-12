@@ -1,3 +1,7 @@
+//sound_pool_example.cpp
+//By Michael Taboada
+//Provided under the unlicense
+//see UNLICENSE for details
 /**
 *example of sound_pool class usage
 *sound_pool allows you to place an arbitrary number of sound sources in virtual space around you, with pitch, volume, and panning adjusted accordingly.
